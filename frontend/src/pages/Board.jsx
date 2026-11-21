@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
+const API_URL = import.meta.env.VITE_API_URL
+
 function Board() {
   const [projects, setProjects] = useState([])
   const [projectId, setProjectId] = useState('')
@@ -16,7 +18,7 @@ function Board() {
   useEffect(() => {
     const loadProjects = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/projects', {
+        const response = await fetch(`${API_URL}/api/projects`, {
           headers: { Authorization: `Bearer ${token}` },
         })
 
@@ -51,7 +53,7 @@ function Board() {
 
       try {
         const response = await fetch(
-          `http://localhost:5000/api/tickets/project/${projectId}`,
+          `${API_URL}/api/tickets/project/${projectId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -78,7 +80,7 @@ function Board() {
   const updateStatus = async (ticketId, status) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/tickets/${ticketId}`,
+        `${API_URL}/api/tickets/${ticketId}`,
         {
           method: 'PUT',
           headers: {

@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 
+const API_URL = import.meta.env.VITE_API_URL
+
 function Tickets() {
   const [tickets, setTickets] = useState([])
   const [projects, setProjects] = useState([])
@@ -46,7 +48,7 @@ function Tickets() {
     async function loadProjects() {
       try {
         const response = await fetch(
-          'http://localhost:5000/api/projects',
+          `${API_URL}/api/projects`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -99,7 +101,7 @@ function Tickets() {
         if (search.trim()) params.append('search', search.trim())
 
         const response = await fetch(
-          `http://localhost:5000/api/tickets/project/${projectId}?${params}`,
+          `${API_URL}/api/tickets/project/${projectId}?${params}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -143,7 +145,7 @@ function Tickets() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/tickets/project/${projectId}`,
+        `${API_URL}/api/tickets/project/${projectId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -169,7 +171,7 @@ function Tickets() {
 
     try {
       const response = await fetch(
-        'http://localhost:5000/api/tickets',
+        `${API_URL}/api/tickets`,
         {
           method: 'POST',
           headers: {
@@ -205,7 +207,7 @@ function Tickets() {
   const updateTicket = async (ticketId, updates) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/tickets/${ticketId}`,
+        `${API_URL}/api/tickets/${ticketId}`,
         {
           method: 'PUT',
           headers: {
@@ -260,7 +262,7 @@ function Tickets() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/tickets/${ticketId}/assign`,
+        `${API_URL}/api/tickets/${ticketId}/assign`,
         {
           method: 'PUT',
           headers: {
@@ -293,7 +295,7 @@ function Tickets() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/tickets/${ticketId}`,
+        `${API_URL}/api/tickets/${ticketId}`,
         {
           method: 'DELETE',
           headers: {
@@ -318,7 +320,7 @@ function Tickets() {
   const loadComments = async (ticketId) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/comments/${ticketId}`,
+        `${API_URL}/api/comments/${ticketId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -351,7 +353,7 @@ function Tickets() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/comments/${ticketId}`,
+        `${API_URL}/api/comments/${ticketId}`,
         {
           method: 'POST',
           headers: {

@@ -1,6 +1,8 @@
 
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+
+const API_URL = import.meta.env.VITE_API_URL
 
 function Projects() {
   const [projects, setProjects] = useState([])
@@ -21,16 +23,13 @@ function Projects() {
   }
 
   // Fetch Projects
-  const fetchProjects = useCallback(async () => {
+  const fetchProjects = async () => {
     try {
-      const response = await fetch(
-        'http://localhost:5000/api/projects',
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      const response = await fetch(`${API_URL}/api/projects`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
       const data = await response.json()
 
@@ -45,38 +44,42 @@ function Projects() {
     } finally {
       setLoading(false)
     }
-  }, [token])
+  }
 
   // Load Projects
   useEffect(() => {
     let ignore = false
 
-    fetch('http://localhost:5000/api/projects', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(async (response) => {
+    const loadProjects = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/projects`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+
         const data = await response.json()
 
         if (!response.ok) {
           throw new Error(data.message || 'Unable to load projects')
         }
 
-        return data
-      })
-      .then((data) => {
         if (!ignore) {
           setProjects(Array.isArray(data) ? data : [])
           setMessage('')
         }
-      })
-      .catch((error) => {
-        if (!ignore) setMessage(error.message)
-      })
-      .finally(() => {
-        if (!ignore) setLoading(false)
-      })
+      } catch (error) {
+        if (!ignore) {
+          setMessage(error.message)
+        }
+      } finally {
+        if (!ignore) {
+          setLoading(false)
+        }
+      }
+    }
+
+    loadProjects()
 
     return () => {
       ignore = true
@@ -89,17 +92,14 @@ function Projects() {
     setMessage('')
 
     try {
-      const response = await fetch(
-        'http://localhost:5000/api/projects',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ title, description }),
-        }
-      )
+      const response = await fetch(`${API_URL}/api/projects`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ title, description }),
+      })
 
       const data = await response.json()
 
@@ -128,7 +128,7 @@ function Projects() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/projects/${projectId}/members`,
+        `${API_URL}/api/projects/${projectId}/members`,
         {
           method: 'POST',
           headers: {
@@ -163,7 +163,7 @@ function Projects() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/projects/${projectId}/members`,
+        `${API_URL}/api/projects/${projectId}/members`,
         {
           method: 'DELETE',
           headers: {

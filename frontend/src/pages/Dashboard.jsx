@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 
+const API_URL = import.meta.env.VITE_API_URL
+
 function Dashboard() {
   const [projects, setProjects] = useState([])
   const [tickets, setTickets] = useState([])
@@ -30,7 +32,7 @@ function Dashboard() {
         }
 
         const projectResponse = await fetch(
-          'http://localhost:5000/api/projects',
+          `${API_URL}/api/projects`,
           { headers }
         )
 
@@ -50,7 +52,7 @@ function Dashboard() {
         const projectId = projectData[0]._id
 
         const ticketResponse = await fetch(
-          `http://localhost:5000/api/tickets/project/${projectId}`,
+          `${API_URL}/api/tickets/project/${projectId}`,
           { headers }
         )
 
