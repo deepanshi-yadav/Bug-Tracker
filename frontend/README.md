@@ -1,4 +1,6 @@
+# Bug Tracker
 
+🌐 **Live Demo:** https://bug-tracker-teal.vercel.app
 # Bug Tracker
 
 Bug Tracker is a web-based application developed to manage projects and track bugs or issues. It helps users create projects, manage tickets, assign tasks to team members and check their progress.
